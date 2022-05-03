@@ -6,11 +6,8 @@
 <ul>
 
     {% for ticket in tickets %}
-
-        <li>{{ ticket }}</li>
-
+        <li><a href="{% url 'ticket' ticket.id %}">  {{ ticket }}</a></li>
     {% endfor %}
-
 
 </ul>
 
