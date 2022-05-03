@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<h1>Liste des tickets</h1>
+
+<ul>
+
+    {% for ticket in tickets %}
+
+        <li>{{ ticket }}</li>
+
+    {% endfor %}
+
+
+</ul>
+
+{% endblock %}
