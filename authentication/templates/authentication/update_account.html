@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h2>Inscription</h2>
+    <h2>Mise à jour du compte {{ user.username }}</h2>
 
     <form method='POST' enctype='multipart/form-data'>
         {{ form.as_p }}
         {% csrf_token %}
-        <button type='submit'>Valider</button>
+        <button type='submit'>Modifier</button>
     </form>
 
 {% endblock content %}

@@ -3,8 +3,7 @@ from django.contrib.auth.views import (LoginView,
                                        LogoutView,
                                        PasswordChangeView,
                                        PasswordChangeDoneView)
-from authentication.views import SignupView
-
+from . import views
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='authentication/login.html',
@@ -14,7 +13,9 @@ urlpatterns = [
                                template_name='authentication/password_change_form.html'),
                                name='password_change'),
     path('password-change-done/', PasswordChangeDoneView.as_view(
-                                    template_name='authentication/password_change_done.html'),
+                                    template_name='authenticatron/password_change_done.html'),
                                     name='password_change_done'),
-    path('signup/', SignupView.as_view(), name='signup')
+    path('signup/', views.SignupView.as_view(), name='signup'),
+    path('my-account/', views.MyAccountView.as_view(), name='my_account'),
+    path('my-account/update/', views.UpdateAccountView.as_view(), name='update_account'),
 ]

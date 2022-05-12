@@ -12,49 +12,35 @@
 
     <body class="bg-dark text-light">
 
-        <div class='container bg-danger'>
 
-            {% if user.is_authenticated %}
+        <div class='container'>
+            <div class='container bg-danger'>
 
+                {% if user.is_authenticated %}
+                    <nav>
+                        <ul class='nav'>
+                            <li class='nav-item dropdown'>
+                                {% if user.photo %}
+                                <img src='{{ user.photo.url }}' alt='Avatar'>
+                                {% endif %}
+                                <a class='nav-link dropdown-toggle' href="#" data-toggle='dropdown'
+                                aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
 
+                                <div class='dropdown-menu'>
+                                    <a class='dropdown-item' href="{% url 'my_account' %}">Mon compte</a>
+                                    <br>
+                                    <a class='dropdown-item' href="{% url 'logout' %}">Se déconnecter</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
 
-
-                <nav>
-                    <ul class="nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'password_change' %}">Modifier mot de passe</a>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-            {% endif %}
-
-
+            <div class='container bg-warning'>
+                {% block content %}{% endblock %}
+            </div>
         </div>
-
-        {% block content %}{% endblock %}
-
-
-
-
-
-
-
-
-
-
-    <div class="container">
-      <h1>Navigation</h1>
-    </div>
-
-
-
-
 
 
 

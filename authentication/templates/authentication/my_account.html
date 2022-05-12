@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ user.username }}</h2>
+
+<ul>
+
+    <li>{{ user.first_name }}</li>
+    <li>{{ user.last_name }}</li>
+    <li>{{ user.email }}</li>
+    <li>Membre depuis {{ user.date_joined }}</li>
+
+</ul>
+
+    <a class='dropdown-item' href="{% url 'password_change' %}">Modifier mot de passe</a>
+    <a class='dropdown-item' href="{% url 'update_account' %}">Modifier informations</a>
+
+{% endblock content %}
