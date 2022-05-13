@@ -12,4 +12,9 @@ class SignupForm(UserCreationForm):
 class UpdateForm(ModelForm):
     class Meta():
         model = models.User
-        fields = ('username', 'email', 'first_name', 'last_name', 'photo')
+        fields = ('username', 'email', 'first_name', 'last_name')
+
+class UpdatePhotoForm(ModelForm):
+    class Meta():
+        model = models.User
+        fields = ['photo']

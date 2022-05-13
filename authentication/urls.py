@@ -18,4 +18,5 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('my-account/', views.MyAccountView.as_view(), name='my_account'),
     path('my-account/update/', views.UpdateAccountView.as_view(), name='update_account'),
+    path('my-account/update/photo', views.UpdatePhotoView.as_view(), name='update_photo'),
 ]

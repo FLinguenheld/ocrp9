@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,38 +10,50 @@
                                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
                                crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}">
     </head>
 
-    <body class="bg-dark text-light">
-
+    <!-- <body class="bg-dark text-light"> -->
+    <body>
 
         <div class='container'>
-            <div class='container bg-danger'>
+            <div class='row justify-content-between prout'>
 
-                {% if user.is_authenticated %}
-                    <nav>
-                        <ul class='nav'>
-                            <li class='nav-item dropdown'>
-                                {% if user.photo %}
-                                <img src='{{ user.photo.url }}' alt='Avatar'>
-                                {% endif %}
-                                <a class='nav-link dropdown-toggle' href="#" data-toggle='dropdown'
-                                aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                <span class='col-3 m-auto'>
+                    <a href="{% url 'home' %}">Home</a>
+                </span>
 
-                                <div class='dropdown-menu'>
-                                    <a class='dropdown-item' href="{% url 'my_account' %}">Mon compte</a>
-                                    <br>
-                                    <a class='dropdown-item' href="{% url 'logout' %}">Se déconnecter</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-                {% endif %}
+                <span class='col-3 m-auto d-block'>
+                    <img src="{% static 'LITReview.png' %}" alt='Logo' class='mx-auto d-block'>
+                </span>
+
+                <span class='col-3 m-auto'>
+                    {% if user.is_authenticated %}
+                        <nav class='float-right'>
+                            <ul class='nav'>
+                                <li class='nav-item dropdown'>
+                                    <a class='nav-link' href="#" data-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                                        {% if user.photo %}
+                                            <img src='{{ user.photo.url }}' alt='Avatar' class='rounded-circle'>
+                                        {% else %}
+                                            <span class='dropdown-toggle'>{{ user.username }}</span>
+                                        {% endif %}
+                                    </a>
+                                    <div class='dropdown-menu'>
+                                        <a class='dropdown-item' href="{% url 'my_account' %}">Mon compte</a>
+                                        <br>
+                                        <a class='dropdown-item' href="{% url 'logout' %}">Se déconnecter</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </span>
             </div>
+        </div>
 
-            <div class='container bg-warning'>
-                {% block content %}{% endblock %}
-            </div>
+        <div class='container bg-warning'>
+            {% block content %}{% endblock %}
         </div>
 
 

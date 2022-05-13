@@ -6,9 +6,8 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 
-import os
-
 from . import forms
+
 
 class SignupView(View):
     template_name = 'authentication/signup.html'
@@ -42,8 +41,7 @@ class UpdateAccountView(LoginRequiredMixin, View):
         return render(request, self.template_name, context={'form': form})
     
     def post(self, request):
-        form = forms.UpdateForm(request.POST, request.FILES, instance=request.user)
-        # request.user.photo.delete()
+        form = forms.UpdateForm(request.POST, instance=request.user)
 
         if form.is_valid():
             form.save()
@@ -52,3 +50,20 @@ class UpdateAccountView(LoginRequiredMixin, View):
         else:
             return render(request, self.template_name, context={'form': form})
         
+class UpdatePhotoView(LoginRequiredMixin, View):
+    template_name = 'authentication/update_photo.html'
+
+    def get(self, request):
+        form = forms.UpdatePhotoForm(instance=request.user)
+        return render(request, self.template_name, context={'form': form})
+
+    def post(self, request):
+        form = forms.UpdatePhotoForm(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            user = form.save()
+            user.resize_photo()
+
+            return redirect('home')
+        else:
+            return render(request, self.template_name, context={'form': form})
