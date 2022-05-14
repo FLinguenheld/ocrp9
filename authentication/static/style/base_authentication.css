@@ -1,0 +1,16 @@
+table, th, thead {
+    padding : 1.1em;
+}
+
+.helptext {
+    color : #A9A9A9;
+    font-size : 0.9em;
+}
+
+.nonfield {
+    color : #F2633D;
+}
+
+input {
+    width : 100%;
+}

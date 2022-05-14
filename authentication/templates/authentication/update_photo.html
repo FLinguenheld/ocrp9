@@ -1,12 +1,29 @@
-{% extends 'base.html' %}
-{% block content %}
-
-    <h2>Mise à jour de la photo de profil</h2>
+{% extends 'authentication/base.html' %}
+{% block content_authentication %}
 
     <form method='POST' enctype='multipart/form-data'>
-        {{ form.as_p }}
         {% csrf_token %}
-        <button type='submit'>Modifier</button>
+
+        <table class='mx-auto'>
+            <thead class='text-center'> 
+                <tr>
+                    <th colspan='2' class='lead font-weight-bold'>
+                        Remplacement de votre photo de profil
+                    </th>
+                </tr>
+            </thead>
+
+            <tr><td class='text-center'>{{ form.photo }}</td></tr>
+
+            <tr>
+                <td colspan='2' class='container'>
+                    <div class='row mt-3'>
+                        <a href="{% url 'my_account' %}" class='btn btn-outline-dark mx-auto'>Annuler</a>
+                        <button type='submit' class='btn btn-outline-dark mx-auto'>Enregistrer</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </form>
 
-{% endblock content %}
+{% endblock content_authentication %}

@@ -46,10 +46,10 @@ class UpdateAccountView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             
-            return redirect('home')
+            return redirect('my_account')
         else:
             return render(request, self.template_name, context={'form': form})
-        
+
 class UpdatePhotoView(LoginRequiredMixin, View):
     template_name = 'authentication/update_photo.html'
 
@@ -64,6 +64,6 @@ class UpdatePhotoView(LoginRequiredMixin, View):
             user = form.save()
             user.resize_photo()
 
-            return redirect('home')
+            return redirect('my_account')
         else:
             return render(request, self.template_name, context={'form': form})

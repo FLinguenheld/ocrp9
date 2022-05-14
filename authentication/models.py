@@ -8,7 +8,6 @@ from PIL import Image
 
 class User(AbstractUser):
     PHOTO_SIZE = (60, 60)
-    EMPTY_FILE_NAME = 'empty_avatar.png'
 
     photo = models.ImageField(blank=True, verbose_name='Photo de profil')
 

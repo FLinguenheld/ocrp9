@@ -1,17 +1,35 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'authentication/base.html' %}
+{% block content_authentication %}
 
-<div class='container'>
+    <form method='POST'>
+        {% csrf_token %}
 
-    <div>
-        <h2>Connexion</h2>
-        <form method='POST'>
-            {{ form.as_p }}
-            {% csrf_token %}
-            <button type='submit'>Se connecter</button>
-        </form>
-    </div>
-    <div>
-        <p>Pas encore membre ? <a href="{% url 'signup' %}"> S'inscrire</a></p>
-    </div>
-{% endblock content %}
+        <table class='mx-auto'>
+            <thead class='text-center'> 
+                <tr>
+                    <th colspan='2' class='lead font-weight-bold'>
+                        Connexion
+                    </th>
+                </tr>
+            </thead>
+
+            {{ form.as_table}}
+
+            <tr>
+                <td colspan='2' class='container'>
+                    <div class='row mt-3'>
+                        <a href="{% url 'login' %}" class='btn btn-outline-dark mx-auto'>Annuler</a>
+                        <button type='submit' class='btn btn-outline-dark mx-auto'>Valider</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' class='container'>
+                    <hr>
+                    <p class='text-center'>Pas encore membre ?&nbsp;<a href="{% url 'signup' %}">S'inscrire</a></p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+{% endblock content_authentication %}
