@@ -14,3 +14,8 @@ table, th, thead {
 input {
     width : 100%;
 }
+
+#photo-clear_id {
+    margin-left : 1.5em;
+    width : 1.2em;
+}
