@@ -1,0 +1,36 @@
+<section class='container border m-1'>
+
+    <header class='row mt-1'>
+        <div class='col'>
+            <p class='text-left'>
+                {% if ticket.user == user %}
+                    Vous avez publié un ticket
+                {% else %}
+                    {{ ticket.user }} a demandé une critique
+                {% endif %}
+            </p>
+        </div>
+        <div class='col'>
+            <p class='text-right'>{{ ticket.time_created }}</p>
+        </div>
+    </header>
+
+    <div class='row mt-1'>
+        <h3 class='col text-center'>{{ ticket.title }}</h3>
+    </div>
+
+    <div class='row mt-1'>
+    {% if ticket.image %}
+        <img class='col img-thumbnail' src='{{ ticket.image.url }}' alt='ImageTicket'>
+    {% endif %}
+        <p class='col text-justify'>{{ ticket.description }}</p>
+    </div>
+
+    {% if buttons and ticket.user == user %}
+        <div class='row justify-content-end mt-1'>
+            <a href="{% url 'update_ticket' ticket.id %}" class='btn btn-outline-dark mr-2'><i class="bi bi-pencil-fill"></i></a>
+            <a href="{% url 'my_account' %}" class='btn btn-outline-dark ml-2'><i class="bi bi-trash3-fill"></i></a>
+        </div>
+    {% endif %}
+
+</section>

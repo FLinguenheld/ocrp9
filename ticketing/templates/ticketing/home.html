@@ -3,5 +3,13 @@
 
 <h1>Home</h1>
 
+<div class='container mx-auto'>
+    {% for t in tickets %}
+        {% include 'ticketing/ticket.html' with ticket=t buttons=True%}
+
+    {% empty %}
+        <p>Aucun ticket créé</p>
+    {% endfor %}
+</div>
 
 {% endblock %}
