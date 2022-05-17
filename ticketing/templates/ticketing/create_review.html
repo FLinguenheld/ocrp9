@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% include 'ticketing/builtin/title.html' with text=title %}
+
+    {% include 'ticketing/builtin/ticket.html' with ticket=t buttons=False %}
+
+    <div class='border my-2 p-2'>
+        <form method='POST'>
+            {% csrf_token %}
+
+            <span class='mt-2'> {{ form.headline }} </span>
+            <span class='mt-2'> {{ form.rating }} </span>
+            <span class='mt-2'> {{ form.body }} </span>
+
+            {% include 'ticketing/builtin/buttons.html' with text='Publier' %}
+
+        </form>
+    </div>
+
+{% endblock %}
