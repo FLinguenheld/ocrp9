@@ -3,9 +3,8 @@
 
     {% include 'ticketing/builtin/title.html' with text='Confirmation' %}
 
-    <div class='border m-2 p-2 ticket'>
-        <p class='text-center m-3'>Suppression du ticket "{{ ticket.title }}" créé le {{ ticket.time_created }} ?<br>
-        Attention, la suppression d'un ticket supprime également la critique associée.</p>
+    <div class='border m-2 p-2 review'>
+        <p class='text-center m-3'>Suppression de la critique "{{ review.headline }}" créé le {{ review.time_created }} ?</p>
         <form method='POST'>
             {% csrf_token %}
             {% include 'ticketing/builtin/buttons.html' with text='Confirmer' %}

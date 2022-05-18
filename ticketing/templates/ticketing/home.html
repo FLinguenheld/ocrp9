@@ -1,11 +1,21 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'ticketing/base.html' %}
+{% block content_ticketing %}
 
 <h1>Home</h1>
 
 <div class='container mx-auto'>
+
+    {% for r in reviews %}
+        {% include 'ticketing/builtin/review.html' with review=r buttons=False %}
+
+    {% empty %}
+        <p>Aucun ticket créé</p>
+    {% endfor %}
+
+
+
     {% for t in tickets %}
-        {% include 'ticketing/builtin/ticket.html' with ticket=t buttons=True%}
+        {% include 'ticketing/builtin/ticket.html' with ticket=t review_opened=True buttons=True %}
 
     {% empty %}
         <p>Aucun ticket créé</p>

@@ -2,8 +2,12 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from PIL import Image
+
 
 class Ticket(models.Model):
+    IMAGE_MAX_SIZE = (300, 300)
+
     title = models.CharField(max_length=128) 
     description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -11,11 +15,21 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     time_edited = models.DateTimeField(null=True, blank=True)
 
+
     class Meta:
         ordering = ['-time_created']
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.image:
+            img = Image.open(self.image)
+            img.thumbnail(self.IMAGE_MAX_SIZE)
+            img.save(self.image.path, quality=100)
+
     def __str__(self):
         return f'{self.title} - {self.user} - {self.time_created}'
+
 
 class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
@@ -26,5 +40,8 @@ class Review(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     time_edited = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['-time_created']
+
     def __str__(self):
-        return f'{self.headline} - {self.ticket}'
+        return f'{self.headline} - À propos de : {self.ticket}'

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'ticketing/base.html' %}
 {% block content %}
 
     {% include 'ticketing/builtin/title.html' with text=title %}
@@ -11,7 +11,7 @@
             <span class='mt-2'>{{ form.description }}</span>
             <span class='mt-2'>{{ form.image }}</span>
 
-            {% include 'ticketing/builtin/buttons.html' with text='Créer' %}
+            {% include 'ticketing/builtin/buttons.html' with text=text_button %}
 
         </form>
     </div>

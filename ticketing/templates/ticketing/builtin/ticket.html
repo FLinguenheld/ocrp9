@@ -1,4 +1,4 @@
-<section class='container border my-2'>
+<section class='container border my-2 ticket'>
 
     <header class='row mt-1'>
         <div class='col'>
@@ -26,21 +26,23 @@
 
     <div class='row mt-1'>
     {% if ticket.image %}
-        <img class='col img-thumbnail' src='{{ ticket.image.url }}' alt='ImageTicket'>
-    {% endif %}
+        <img class='col-4 img-thumbnail' src='{{ ticket.image.url }}' alt='ImageTicket'>
+        <p class='col-8 text-justify'>{{ ticket.description }}</p>
+    {% else %}
         <p class='col text-justify'>{{ ticket.description }}</p>
+    {% endif %}
     </div>
 
-
-    {% if buttons %}
-    <a href="{% url 'create_review' ticket.id %}" class='btn btn-outline-dark mx-2'>Écrire une critique</a>
+    
+    <div class='row justify-content-end m-1'>
+    {% if review_opened %}
+        <a href="{% url 'create_review' ticket.id %}" class='col-3 mx-auto btn btn-outline-dark mx-2'>Écrire une critique</a>
     {% endif %}
 
     {% if buttons and ticket.user == user %}
-        <div class='row justify-content-end m-1'>
-            <a href="{% url 'update_ticket' ticket.id %}" class='btn btn-outline-dark mr-2'><i class="bi bi-pencil-fill"></i></a>
-            <a href="{% url 'delete_ticket' ticket.id %}" class='btn btn-outline-dark ml-2'><i class="bi bi-trash3-fill"></i></a>
-        </div>
+        <a href="{% url 'update_ticket' ticket.id %}" class='btn btn-outline-dark mr-2'><i class="bi bi-pencil-fill"></i></a>
+        <a href="{% url 'delete_ticket' ticket.id %}" class='btn btn-outline-dark ml-2'><i class="bi bi-trash3-fill"></i></a>
     {% endif %}
+    </div>
 
 </section>
