@@ -12,9 +12,9 @@
         </div>
         <div class='col'>
             <p class='text-right'>
-            Créé le {{ review.time_created }}
+                {{ review.time_created }}
             {% if review.time_edited %}
-                <span class='font-italic'><br> *Édité le {{ review.time_edited }}</span>
+                <span class='font-italic'><br> *Éditée le {{ review.time_edited }}</span>
             {% endif %}
             </p>
         </div>
@@ -22,15 +22,23 @@
 
 
     <div class='row mt-1'>
-        <h3 class='col text-center'>{{ review.headline }}</h3>
+        <h3 class='mx-auto'>
+
+                {{ review.headline }} &nbsp;-&nbsp;
+                {% for rating in review.rating %}
+
+                    {% if rating == 'Y' %}
+                        <i class="bi bi-star-fill"></i>
+                    {% elif rating == 'N' %}
+                        <i class="bi bi-star"></i>
+                    {% endif %}
+
+                {% endfor %}
+        </h3>
     </div>
 
     <div class='row mt-1'>
-        <h3 class='col text-center'>{{ review.rating }}</h3>
-    </div>
-
-    <div class='row mt-1'>
-        <h3 class='col text-center'>{{ review.body }}</h3>
+        <p class='col text-justify'>{{ review.body }}</p>
     </div>
 
 
@@ -40,7 +48,6 @@
             <a href="{% url 'delete_review' review.id %}" class='btn btn-outline-dark ml-2'><i class="bi bi-trash3-fill"></i></a>
         </div>
     {% endif %}
-
 
 
 

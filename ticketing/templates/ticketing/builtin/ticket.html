@@ -12,7 +12,7 @@
         </div>
         <div class='col'>
             <p class='text-right'>
-            Créé le {{ ticket.time_created }}
+                {{ ticket.time_created }}
             {% if ticket.time_edited %}
                 <span class='font-italic'><br> *Édité le {{ ticket.time_edited }}</span>
             {% endif %}
@@ -36,7 +36,11 @@
     
     <div class='row justify-content-end m-1'>
     {% if review_opened %}
-        <a href="{% url 'create_review' ticket.id %}" class='col-3 mx-auto btn btn-outline-dark mx-2'>Écrire une critique</a>
+        {% if not ticket.already_reviewed %}
+            <a href="{% url 'create_review' ticket.id %}" class='col-3 mx-auto btn btn-outline-dark mx-2'>Écrire une critique</a>
+        {% else %}
+            <a  class='col-3 mx-auto btn btn-outline-dark mx-2 disabled'>Ticket déjà critiqué</a>
+        {% endif %}
     {% endif %}
 
     {% if buttons and ticket.user == user %}

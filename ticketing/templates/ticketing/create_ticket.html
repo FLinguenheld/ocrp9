@@ -1,18 +1,12 @@
 {% extends 'ticketing/base.html' %}
-{% block content %}
+{% block content_ticketing %}
 
     {% include 'ticketing/builtin/title.html' with text=title %}
 
-    <div class='border m-2 p-2'>
+    <div class='border m-2 p-2 ticket'>
         <form method='POST' enctype='multipart/form-data' >
             {% csrf_token %}
-
-            <span class='mt-2'>{{ form.title }}</span>
-            <span class='mt-2'>{{ form.description }}</span>
-            <span class='mt-2'>{{ form.image }}</span>
-
-            {% include 'ticketing/builtin/buttons.html' with text=text_button %}
-
+            {% include 'ticketing/builtin/form_ticket.html' with add_buttons=True %}
         </form>
     </div>
 

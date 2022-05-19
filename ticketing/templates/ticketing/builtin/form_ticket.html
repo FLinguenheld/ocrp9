@@ -1,0 +1,7 @@
+<span class='mt-2'>{{ form_ticket.title }}</span>
+<span class='mt-2'>{{ form_ticket.description }}</span>
+<span class='mt-2'>{{ form_ticket.image }}</span>
+
+{% if add_buttons %}
+    {% include 'ticketing/builtin/buttons.html' with text=text_button %}
+{% endif %}

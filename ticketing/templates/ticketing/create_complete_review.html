@@ -1,0 +1,25 @@
+{% extends 'ticketing/base.html' %}
+{% block content_ticketing %}
+
+    {% include 'ticketing/builtin/title.html' with text=title %}
+
+
+    <div class='border m-2'>
+        <form method='POST' enctype='multipart/form-data' >
+            {% csrf_token %}
+                <div class='border m-2 p-2 ticket'>
+                    {% include 'ticketing/builtin/form_ticket.html' with add_buttons=False %}
+                </div>
+
+                <div class='border m-2 p-2 review'>
+                    {% include 'ticketing/builtin/form_review.html' with add_buttons=False %}
+                </div>
+
+                {% include 'ticketing/builtin/buttons.html' with text=text_button %}
+        </form>
+    </div>
+
+
+
+
+{% endblock %}

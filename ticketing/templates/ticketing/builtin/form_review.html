@@ -1,0 +1,17 @@
+    <div class='mt-2'> {{ form_review.headline }} </div>
+
+    <fieldset class='my-2 text-center'>
+        <span>{{ form_review.rating_choice.label }}</span>
+        {% for radio in form_review.rating_choice %}
+        <span class='form-check form-check-inline'>
+            {{ radio.tag }}
+            <label class='form-check-label' for="{{ radio.id_for_label }}"> {{ radio.choice_label }} </label>
+        </span>
+        {% endfor %}
+    </fieldset>
+
+    <div class='mt-2'> {{ form_review.body }} </div>
+
+    {% if add_buttons %}
+        {% include 'ticketing/builtin/buttons.html' with text=text_button %}
+    {% endif %}
