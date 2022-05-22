@@ -1,0 +1,20 @@
+{% extends 'subscription/base.html' %}
+{% block content_subscription %}
+
+    <h3>Test</h3>
+
+    {{ forms_unsubscribe }}
+
+    {% for name, id in subscriptions.items %}
+
+
+        <label>{{ name }}</label>
+
+
+
+        <a href="{% url 'delete_subscription' id %}">Désabonner</a>
+
+
+    {% endfor %}
+
+{% endblock %}

@@ -15,7 +15,6 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
     time_edited = models.DateTimeField(null=True, blank=True)
 
-
     class Meta:
         ordering = ['-time_created']
 
@@ -23,7 +22,7 @@ class Ticket(models.Model):
         super().save(*args, **kwargs)
 
         if self.image:
-            img = Image.open(self.image)
+            img = Image.open(self.image.path)
             img.thumbnail(self.IMAGE_MAX_SIZE)
             img.save(self.image.path, quality=100)
 

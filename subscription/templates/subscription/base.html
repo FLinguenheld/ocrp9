@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style/base_subscription.css' %}">
+
+<div class='container'>
+    {% block content_subscription %}{% endblock %}
+</div>
+
+{% endblock content %}
