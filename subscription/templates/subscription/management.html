@@ -3,18 +3,46 @@
 
     <h3>Test</h3>
 
-    {{ forms_unsubscribe }}
+    <div class='row'>Suivre d'autres d'utilisateurs</div>
+        {% if choices %}
+            <form method='POST'>
+                {% csrf_token %}
 
-    {% for name, id in subscriptions.items %}
+                    <select name='new_subscription' class='w-50'>
+                        {% for username, id in choices.items %}
+                            <option value={{ id }}>{{ username }}</option>
+                        {% endfor %}
+
+                    </select>
+                <button type='submit' class='btn btn-outline-dark mx-2'>S'abonner</button>
+            </form>
+        {% endif %}
+    </div>
 
 
-        <label>{{ name }}</label>
+    <div class='row'>Abonnés</div>
+        {% for name, field in subscriptions.items %}
+
+            <form method='POST'>
+                {% csrf_token %}
+
+                <label>{{ name }}</label> {{ field }}
+                <button type='submit' class='btn btn-outline-dark mx-2'>Désabonner</button>
+            </form>
+
+        {% endfor %}
+    </div>
+
+    <div class='row'>Abonnés</div>
+
+        {% for follower in followers %}
+
+            {{ follower }}
+
+        {% endfor %}
+
+    </div>
 
 
-
-        <a href="{% url 'delete_subscription' id %}">Désabonner</a>
-
-
-    {% endfor %}
 
 {% endblock %}
