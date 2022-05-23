@@ -29,6 +29,8 @@ class Ticket(models.Model):
     def __str__(self):
         return f'{self.title} - {self.user} - {self.time_created}'
 
+    def get_type(self):
+        return "TICKET"
 
 class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
@@ -44,3 +46,6 @@ class Review(models.Model):
 
     def __str__(self):
         return f'{self.headline} - À propos de : {self.ticket}'
+
+    def get_type(self):
+        return "REVIEW"

@@ -1,3 +1,4 @@
+from itertools import chain
 from django.shortcuts import render, redirect
 
 from django.views.generic import View
@@ -7,6 +8,7 @@ from datetime import datetime
 
 from . import forms
 from .models import Ticket, Review
+from subscription.models import UserFollows
 
 
 class HomeView(LoginRequiredMixin, View):
@@ -14,27 +16,48 @@ class HomeView(LoginRequiredMixin, View):
 
     def get(self, request):
 
-        # Lists all reviews with their tickets
-        reviews = Review.objects.all()
+        # Get followed users and me
+        followed_users = [request.user]
+        for entry in UserFollows.objects.filter(user=request.user):
+            followed_users.append(entry.followed_user)
 
-        for review in reviews:
-            ticket = Ticket.objects.filter(id=review.ticket.id)
-            review.ticket_ooject = ticket.first()
+        # Get all reviews with these users
+        reviews = set()
+        for user in followed_users:
+            for review in Review.objects.filter(user=user):
 
-            rating = review.rating
-            review.rating = ['Y' for y in range(rating)]
-            review.rating += ['N' for n in range(rating, 5)]  # How getting the max validator ?
+                self._transform_rating(review)
+                reviews.add(review)
 
-        # lists all user's tikets
-        tickets = Ticket.objects.all()
-        for t in tickets:
-            if Review.objects.filter(ticket=t.id):
-                t.already_reviewed = True
-            else:
-                t.already_reviewed = False
+        # Get all tikets with these users
+        tickets = set()
+        for user in followed_users:
+            tickets_before_filter = Ticket.objects.filter(user=user)
 
-        return render(request, self.template_name, context={'reviews': reviews,
-                                                             'tickets': tickets})
+            # Check if this ticket has a review or not
+            for ticket in tickets_before_filter:
+
+                # If not, add as a ticket
+                if not Review.objects.filter(ticket=ticket).exists():
+                    tickets.add(ticket)
+
+                # Otherwise, add as a review (doubles are ignore by the set)
+                else:
+                    review = Review.objects.get(ticket=ticket)
+                    self._transform_rating(review)
+                    reviews.add(review)
+
+        # Combine and sort the two types of posts
+        posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+
+        return render(request, self.template_name, context={'posts': posts})
+
+    def _transform_rating(self, review):
+        """ Converting rating integer by a chain like 'YYYNN' to display stars instead of a number """
+
+        rating = review.rating
+        review.rating = ['Y' for y in range(rating)]
+        review.rating += ['N' for n in range(rating, 5)]  # How getting the max validator ?
 
 
 class CreateCompleteReviewView(LoginRequiredMixin, View):

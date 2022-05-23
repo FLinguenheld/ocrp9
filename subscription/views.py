@@ -7,7 +7,6 @@ from . import forms
 from .models import UserFollows
 from authentication.models import User
 
-from django.utils.datastructures import MultiValueDict
 
 class SubscriptionManagementView(LoginRequiredMixin, View):
     template_name = 'subscription/management.html'
