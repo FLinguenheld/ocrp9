@@ -11,8 +11,8 @@ from .models import Ticket, Review
 from subscription.models import UserFollows
 
 
-class HomeView(LoginRequiredMixin, View):
-    template_name = 'ticketing/home.html'
+class FluxView(LoginRequiredMixin, View):
+    template_name = 'ticketing/flux.html'
 
     def get(self, request):
 
@@ -25,8 +25,6 @@ class HomeView(LoginRequiredMixin, View):
         reviews = set()
         for user in followed_users:
             for review in Review.objects.filter(user=user):
-
-                self._transform_rating(review)
                 reviews.add(review)
 
         # Get all tikets with these users
@@ -44,7 +42,6 @@ class HomeView(LoginRequiredMixin, View):
                 # Otherwise, add as a review (doubles are ignore by the set)
                 else:
                     review = Review.objects.get(ticket=ticket)
-                    self._transform_rating(review)
                     reviews.add(review)
 
         # Combine and sort the two types of posts
@@ -52,12 +49,36 @@ class HomeView(LoginRequiredMixin, View):
 
         return render(request, self.template_name, context={'posts': posts})
 
-    def _transform_rating(self, review):
-        """ Converting rating integer by a chain like 'YYYNN' to display stars instead of a number """
 
-        rating = review.rating
-        review.rating = ['Y' for y in range(rating)]
-        review.rating += ['N' for n in range(rating, 5)]  # How getting the max validator ?
+class PostView(LoginRequiredMixin, View):
+    template_name = 'ticketing/post.html'
+
+    def get(self, request):
+
+        # Get all my reviews
+        reviews = set()
+        for review in Review.objects.filter(user=request.user):
+            reviews.add(review)
+
+        # Get all my tickets
+        # For the post, tickets have to be display even if a review has been created (asked by specifications)
+        # They will be display twice
+        tickets = Ticket.objects.filter(user=request.user)
+
+        # Check if someone has reviewed a ticket to save it in 'reviews'
+        for ticket in tickets:
+
+            if Review.objects.filter(ticket=ticket).exists():
+                review = Review.objects.get(ticket=ticket)
+                reviews.add(review)
+
+                # Disable the button to create a review
+                ticket.already_reviewed = True
+
+        # Combine and sort the two types of posts
+        posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+
+        return render(request, self.template_name, context={'posts': posts})
 
 
 class CreateCompleteReviewView(LoginRequiredMixin, View):
@@ -143,7 +164,7 @@ class UpdateTicketView(LoginRequiredMixin, View):
             ticket.time_edited = datetime.today()
             ticket.save()
 
-            return redirect('home')
+            return redirect('posts')
 
         else:
             return render(request, self.template_name, context={'form_ticket': form,
@@ -162,7 +183,7 @@ class DeleteTicketView(LoginRequiredMixin, View):
         ticket = Ticket.objects.get(id=ticket_id)
         ticket.delete()
 
-        return redirect('home')
+        return redirect('posts')
 
 
 class CreateReviewView(LoginRequiredMixin, View):
@@ -223,7 +244,7 @@ class UpdateReviewView(LoginRequiredMixin, View):
             review.rating = form.cleaned_data.get('rating_choice')
             review.save()
 
-            return redirect('home')
+            return redirect('posts')
 
         else:
             return render(request, self.template_name, context={'t': ticket,
@@ -243,4 +264,4 @@ class DeleteReviewView(LoginRequiredMixin, View):
         review = Review.objects.get(id=review_id)
         review.delete()
 
-        return redirect('home')
+        return redirect('posts')

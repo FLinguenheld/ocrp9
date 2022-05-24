@@ -16,46 +16,46 @@
 
     <body>
 
-        <div class='container-fluid mb-3'>
-            <div class='row justify-content-between banner'>
+        <div class='container-fluid mb-5 banner'>
 
-                {% if user.is_authenticated %}
-                    <span class='col-3 m-auto'>
-                        <a href="{% url 'create_ticket' %}">Nouveau ticket</a>
-                        <a href="{% url 'create_complete_review' %}">Nouvelle critique</a>
-                        <a href="{% url 'subscription_management' %}">Abonnements</a>
-                    </span>
-                {% endif %}
+            <div class='row'>
+                <a class='col my-auto' href="{% url 'home' %}">
+                    <img class='img-fluid' src="{% static 'LITReview.png' %}" alt='Logo'>
+                </a>
 
-                <span class='col-3 m-auto d-block'>
-                    <a href="{% url 'home' %}">
-                        <img src="{% static 'LITReview.png' %}" alt='Logo' class='mx-auto d-block'>
-                    </a>
-                </span>
-
-                <span class='col-3 m-auto'>
+                <nav class='col'>
                     {% if user.is_authenticated %}
-                        <nav class='float-right'>
-                            <ul class='nav'>
-                                <li class='nav-item dropdown'>
-                                    <a class='nav-link' href="#" data-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
-                                        {% if user.photo %}
-                                            <img src='{{ user.photo.url }}' alt='Avatar' class='rounded-circle'>
-                                        {% else %}
-                                            <span class='dropdown-toggle'>{{ user.username }}</span>
-                                        {% endif %}
-                                    </a>
-                                    <div class='dropdown-menu'>
-                                        <a class='dropdown-item' href="{% url 'my_account' %}">Mon compte</a>
-                                        <br>
-                                        <a class='dropdown-item' href="{% url 'logout' %}">Se déconnecter</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </nav>
+                        <ul class='nav justify-content-end'>
+
+                            <li class='nav-item my-auto'>
+                                <a class='nav-link text-body' href="{% url 'home' %}">FLUX</a>
+                            </li>
+                            <li class='nav-item my-auto'>
+                                <a class='nav-link text-body' href="{% url 'posts' %}">POSTS</a>
+                            </li>
+                            <li class='nav-item my-auto'>
+                                <a class='nav-link text-body' href="{% url 'subscription_management' %}">ABONNEMENTS</a>
+                            </li>
+
+                            <li class='nav-item my-auto dropleft dropdown'>
+                                <a class='nav-link text-body lead' href="#" data-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                                    {% if user.photo %}
+                                        <img src='{{ user.photo.url }}' alt='Avatar' class='rounded-circle'>
+                                    {% else %}
+                                        <span class='dropdown-toggle'>{{ user.username }}</span>
+                                    {% endif %}
+                                </a>
+                                <div class='dropdown-menu'>
+                                    <a class='dropdown-item' href="{% url 'my_account' %}">Mon compte</a>
+                                    <br>
+                                    <a class='dropdown-item' href="{% url 'logout' %}">Se déconnecter</a>
+                                </div>
+                            </li>
+                        </ul>
                     {% endif %}
-                </span>
+                </nav>
             </div>
+
         </div>
 
         <!-- <div class='container bg-warning'> -->

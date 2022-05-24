@@ -6,7 +6,7 @@
     {% for post in posts %}
 
         {% if post.get_type == 'REVIEW' %}
-            {% include 'ticketing/builtin/review.html' with review=post buttons=False %}
+            {% include 'ticketing/builtin/review.html' with review=post buttons=True %}
 
         {% elif post.get_type == 'TICKET' %}
             {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=True buttons=True %}
@@ -14,7 +14,7 @@
         {% endif %}
 
     {% empty %}
-        <p>Aucune entrée à afficher</p>
+        <p>Vous n'avez rien publié</p>
     {% endfor %}
 
 </div>

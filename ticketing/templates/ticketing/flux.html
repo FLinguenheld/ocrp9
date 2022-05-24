@@ -1,0 +1,28 @@
+{% extends 'ticketing/base.html' %}
+{% block content_ticketing %}
+
+<div class='container mx-auto'>
+    <div class='row mb-3'>
+        <a href="{% url 'create_ticket' %}" class='col mx-5 btn btn-outline-dark mr-2'>Nouveau ticket</a>
+        <a href="{% url 'create_complete_review' %}" class='col mx-5 btn btn-outline-dark mr-2'>Nouvelle critique</a>
+    </div>
+
+    <div class'row'>
+        {% for post in posts %}
+
+            {% if post.get_type == 'REVIEW' %}
+                {% include 'ticketing/builtin/review.html' with review=post buttons=False %}
+
+            {% elif post.get_type == 'TICKET' %}
+                {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=True buttons=False %}
+
+        {% endif %}
+
+        {% empty %}
+            <p>Aucune entrée à afficher</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
