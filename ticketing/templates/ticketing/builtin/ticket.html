@@ -20,20 +20,19 @@
         </div>
     </header>
 
-    <div class='row mt-1'>
+    <div class='row'>
         <h3 class='col text-center'>{{ ticket.title }}</h3>
     </div>
 
-    <div class='row mt-1'>
+    <div class='row mt-3 px-3'>
     {% if ticket.image %}
-        <img class='col-4 img-thumbnail' src='{{ ticket.image.url }}' alt='ImageTicket'>
-        <p class='col-8 text-justify'>{{ ticket.description }}</p>
+        <img class='col-3 img-thumbnail' src='{{ ticket.image.url }}' alt='ImageTicket'>
+        <span class='col-9 text-justify'>{{ ticket.description|escape|linebreaks }}</span>
     {% else %}
-        <p class='col text-justify'>{{ ticket.description }}</p>
+        <p class='col text-justify'>{{ ticket.description|escape|linebreaks }}</p>
     {% endif %}
     </div>
 
-    
     <div class='row justify-content-end m-1'>
         {% if review_opened %}
             {% if not ticket.already_reviewed %}

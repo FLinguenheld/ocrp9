@@ -46,6 +46,8 @@
                                     {% endif %}
                                 </a>
                                 <div class='dropdown-menu'>
+                                    <p class='text-center font-weight-bold'>{{ user }}</p>
+                                    <hr>
                                     <a class='dropdown-item' href="{% url 'my_account' %}">Mon compte</a>
                                     <br>
                                     <a class='dropdown-item' href="{% url 'logout' %}">Se déconnecter</a>

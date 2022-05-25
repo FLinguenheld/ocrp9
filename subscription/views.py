@@ -30,7 +30,6 @@ class SubscriptionManagementView(LoginRequiredMixin, View):
         for sub in UserFollows.objects.filter(followed_user=request.user.id):
             active_followers.append(sub.user)
 
-
         # Sort needed ?
         return render(request, self.template_name, context={'choices': choices,
                                                             'subscriptions': active_subscriptions,

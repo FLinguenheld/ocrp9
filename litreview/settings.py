@@ -8,6 +8,13 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
+
+
+admin       - PassAdmin10
+Flo37       - PassDeTest37
+Henri62     - PassDeTest62
+Sophie14    - PassDeTest14
+
 """
 
 from pathlib import Path
@@ -57,7 +64,7 @@ ROOT_URLCONF = 'litreview.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.joinpath('templates'),],
+        'DIRS': [BASE_DIR.joinpath('templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 5,}
+        'OPTIONS': {'min_length': 5, }
     },
     # {
     #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -109,7 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 

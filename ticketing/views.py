@@ -4,11 +4,34 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from datetime import datetime
+# from datetime import datetime
+from django.utils.timezone import now
 
 from . import forms
 from .models import Ticket, Review
 from subscription.models import UserFollows
+
+import functools
+
+
+def check_user(Model):
+    """ Decorator used to check whether the user in request is the same that the user in the Model.get(id).user """
+
+    def decorator_check_user(func):
+        @functools.wraps(func)
+        def wrapper_check_user(*args, **kwargs):
+
+            try:
+                if 'id' in kwargs and Model.objects.get(id=kwargs['id']).user == args[1].user:
+                    return func(*args, **kwargs)
+                else:
+                    return redirect('home')
+
+            except Model.DoesNotExist:
+                return redirect('home')
+
+        return wrapper_check_user
+    return decorator_check_user
 
 
 class FluxView(LoginRequiredMixin, View):
@@ -148,20 +171,22 @@ class UpdateTicketView(LoginRequiredMixin, View):
     template_name = 'ticketing/create_ticket.html'
     title = 'Modification du ticket'
 
-    def get(self, request, ticket_id):
-        ticket = Ticket.objects.get(id=ticket_id)
+    @check_user(Model=Ticket)
+    def get(self, request, id):
+        ticket = Ticket.objects.get(id=id)
         form = forms.TicketForm(instance=ticket)
         return render(request, self.template_name, context={'form_ticket': form,
                                                             'title': self.title,
                                                             'text_button': 'Modifier'})
 
-    def post(self, request, ticket_id):
-        ticket = Ticket.objects.get(id=ticket_id)
+    @check_user(Model=Ticket)
+    def post(self, request, id):
+        ticket = Ticket.objects.get(id=id)
         form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
 
         if form.is_valid():
             ticket = form.save(commit=False)
-            ticket.time_edited = datetime.today()
+            ticket.time_edited = now()
             ticket.save()
 
             return redirect('posts')
@@ -175,12 +200,14 @@ class UpdateTicketView(LoginRequiredMixin, View):
 class DeleteTicketView(LoginRequiredMixin, View):
     template_name = 'ticketing/delete_ticket.html'
 
-    def get(self, request, ticket_id):
-        ticket = Ticket.objects.get(id=ticket_id)
+    @check_user(Model=Ticket)
+    def get(self, request, id):
+        ticket = Ticket.objects.get(id=id)
         return render(request, self.template_name, context={'ticket': ticket})
-    
-    def post(self, request, ticket_id):
-        ticket = Ticket.objects.get(id=ticket_id)
+
+    @check_user(Model=Ticket)
+    def post(self, request, id):
+        ticket = Ticket.objects.get(id=id)
         ticket.delete()
 
         return redirect('posts')
@@ -190,8 +217,8 @@ class CreateReviewView(LoginRequiredMixin, View):
     template_name = 'ticketing/create_review.html'
     title = "Écriture d'une critique"
 
-    def get(self, request, ticket_id):
-        ticket = Ticket.objects.get(id=ticket_id)
+    def get(self, request, id):
+        ticket = Ticket.objects.get(id=id)
         form = forms.ReviewForm(initial={'rating_choice': 5})
 
         return render(request, self.template_name, context={'t': ticket,
@@ -199,8 +226,8 @@ class CreateReviewView(LoginRequiredMixin, View):
                                                             'title': self.title,
                                                             'text_button': 'Publier'})
 
-    def post(self, request, ticket_id):
-        ticket = Ticket.objects.get(id=ticket_id)
+    def post(self, request, id):
+        ticket = Ticket.objects.get(id=id)
         form = forms.ReviewForm(request.POST, initial={'rating_choice': 5})
 
         if form.is_valid():
@@ -223,8 +250,9 @@ class UpdateReviewView(LoginRequiredMixin, View):
     template_name = 'ticketing/create_review.html'
     title = "Modification d'une critique"
 
-    def get(self, request, review_id):
-        review = Review.objects.get(id=review_id)
+    @check_user(Model=Review)
+    def get(self, request, id):
+        review = Review.objects.get(id=id)
         ticket = Ticket.objects.get(id=review.ticket.id)
         form = forms.ReviewForm(instance=review, initial={'rating_choice': review.rating})
 
@@ -233,14 +261,15 @@ class UpdateReviewView(LoginRequiredMixin, View):
                                                             'title': self.title,
                                                             'text_button': 'Modifier'})
 
-    def post(self, request, review_id):
-        review = Review.objects.get(id=review_id)
+    @check_user(Model=Review)
+    def post(self, request, id):
+        review = Review.objects.get(id=id)
         ticket = Ticket.objects.get(id=review.ticket.id)
         form = forms.ReviewForm(request.POST, instance=review, initial={'rating_choice': review.rating})
 
         if form.is_valid():
             review = form.save(commit=False)
-            review.time_edited = datetime.today()
+            review.time_edited = now()
             review.rating = form.cleaned_data.get('rating_choice')
             review.save()
 
@@ -251,17 +280,19 @@ class UpdateReviewView(LoginRequiredMixin, View):
                                                                 'form_review': form,
                                                                 'title': self.title,
                                                                 'text_button': 'Modifier'})
-        
+
 
 class DeleteReviewView(LoginRequiredMixin, View):
     template_name = 'ticketing/delete_review.html'
 
-    def get(self, request, review_id):
-        review = Review.objects.get(id=review_id)
+    @check_user(Model=Review)
+    def get(self, request, id):
+        review = Review.objects.get(id=id)
         return render(request, self.template_name, context={'review': review})
-    
-    def post(self, request, review_id):
-        review = Review.objects.get(id=review_id)
+
+    @check_user(Model=Review)
+    def post(self, request, id):
+        review = Review.objects.get(id=id)
         review.delete()
 
         return redirect('posts')

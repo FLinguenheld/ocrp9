@@ -9,12 +9,12 @@
             {% include 'ticketing/builtin/review.html' with review=post buttons=True %}
 
         {% elif post.get_type == 'TICKET' %}
-            {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=True buttons=True %}
+            {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=False buttons=True %}
 
         {% endif %}
 
     {% empty %}
-        <p>Vous n'avez rien publié</p>
+        <h4 class='text-center'>Vous n'avez rien publié</h4>
     {% endfor %}
 
 </div>

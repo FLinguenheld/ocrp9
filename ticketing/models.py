@@ -8,7 +8,7 @@ from PIL import Image
 class Ticket(models.Model):
     IMAGE_MAX_SIZE = (300, 300)
 
-    title = models.CharField(max_length=128) 
+    title = models.CharField(max_length=128)
     description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
@@ -50,6 +50,6 @@ class Review(models.Model):
     @property
     def rating_stars(self):
         """ Used in review's template to diplay stars, it converts rating int in a string list like : 'YYYNN' """
-        rating = ['Y' for y in range(self.rating)]
-        rating += ['N' for n in range(self.rating, 5)]
+        rating = ['Y' for _ in range(self.rating)]
+        rating += ['N' for _ in range(self.rating, 5)]
         return rating

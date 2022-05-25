@@ -1,7 +1,4 @@
-from django.forms import ModelForm
 from django import forms
-from .models import UserFollows
-from authentication.models import User
 
 
 class RemoveSubscriptionForm(forms.Form):
@@ -10,6 +7,3 @@ class RemoveSubscriptionForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-
-

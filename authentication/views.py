@@ -10,7 +10,7 @@ from . import forms
 
 class SignupView(View):
     template_name = 'authentication/signup.html'
-    
+
     def get(self, request):
         form = forms.SignupForm()
         return render(request, self.template_name, context={'form': form})
@@ -26,11 +26,13 @@ class SignupView(View):
 
         return render(request, self.template_name, context={'form': form})
 
+
 class MyAccountView(LoginRequiredMixin, View):
     template_name = 'authentication/my_account.html'
 
     def get(self, request):
         return render(request, self.template_name)
+
 
 class UpdateAccountView(LoginRequiredMixin, View):
     template_name = 'authentication/update_account.html'
@@ -38,16 +40,17 @@ class UpdateAccountView(LoginRequiredMixin, View):
     def get(self, request):
         form = forms.UpdateForm(instance=request.user)
         return render(request, self.template_name, context={'form': form})
-    
+
     def post(self, request):
         form = forms.UpdateForm(request.POST, instance=request.user)
 
         if form.is_valid():
             form.save()
-            
+
             return redirect('my_account')
         else:
             return render(request, self.template_name, context={'form': form})
+
 
 class UpdatePhotoView(LoginRequiredMixin, View):
     template_name = 'authentication/update_photo.html'
