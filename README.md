@@ -63,7 +63,7 @@ Il contient plusieurs utilisateurs :
 ```
 Sophie14       PassDeTest14
 Flo37          PassDeTest37
-Henri62        PassDeTest62
+Henry62        PassDeTest62
 admin          PassAdmin10
 ```
 

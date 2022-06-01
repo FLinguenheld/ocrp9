@@ -13,6 +13,9 @@ from subscription.models import UserFollows
 
 import functools
 
+from django.db.models import Q
+from django.db.models import CharField, Value
+
 
 def check_user(Model):
     """ Decorator used to check whether the user in request is the same that the user in the Model.get(id).user """
@@ -32,6 +35,8 @@ def check_user(Model):
 
         return wrapper_check_user
     return decorator_check_user
+
+
 
 
 class FluxView(LoginRequiredMixin, View):
@@ -66,6 +71,25 @@ class FluxView(LoginRequiredMixin, View):
                 else:
                     review = Review.objects.get(ticket=ticket)
                     reviews.add(review)
+
+        # Combine and sort the two types of posts
+        posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+
+        return render(request, self.template_name, context={'posts': posts})
+
+
+class FluxView_Test(LoginRequiredMixin, View):
+    template_name = 'ticketing/post.html'
+
+    def get(self, request):
+
+        # For the post, tickets have to be display even if a review has been created (asked by specifications)
+        # They will be display twice
+        tickets = Ticket.objects.filter(user=request.user)
+        reviews = Review.objects.filter(Q(user=request.user) | Q(ticket__in=tickets))
+
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
         # Combine and sort the two types of posts
         posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)

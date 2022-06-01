@@ -5,10 +5,10 @@
 
     {% for post in posts %}
 
-        {% if post.get_type == 'REVIEW' %}
+        {% if post.content_type == 'REVIEW' %}
             {% include 'ticketing/builtin/review.html' with review=post buttons=True %}
 
-        {% elif post.get_type == 'TICKET' %}
+        {% elif post.content_type == 'TICKET' %}
             {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=False buttons=True %}
 
         {% endif %}
