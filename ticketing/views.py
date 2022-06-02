@@ -1,20 +1,17 @@
 from itertools import chain
+import functools
 from django.shortcuts import render, redirect
 
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.db.models import CharField, Value
 
-# from datetime import datetime
 from django.utils.timezone import now
 
 from . import forms
 from .models import Ticket, Review
 from subscription.models import UserFollows
-
-import functools
-
-from django.db.models import Q
-from django.db.models import CharField, Value
 
 
 def check_user(Model):
@@ -37,6 +34,20 @@ def check_user(Model):
     return decorator_check_user
 
 
+class CheckUserMixin():
+
+    def check(self, request, id, Model):
+        try:
+            print('c est bon ?')
+            if Model.objects.get(id=id).user == request.user:
+                print('c est bon')
+                return True
+            else:
+                print('baaaaaahhhhhhhhh ?')
+                return redirect('home')
+
+        except Model.DoesNotExist:
+            return redirect('home')
 
 
 class FluxView(LoginRequiredMixin, View):
@@ -44,50 +55,16 @@ class FluxView(LoginRequiredMixin, View):
 
     def get(self, request):
 
-        # Get followed users and me
-        followed_users = [request.user]
-        for entry in UserFollows.objects.filter(user=request.user):
-            followed_users.append(entry.followed_user)
+        followed_users = UserFollows.objects.filter(user=request.user).values('followed_user')
 
-        # Get all reviews with these users
-        reviews = set()
-        for user in followed_users:
-            for review in Review.objects.filter(user=user):
-                reviews.add(review)
+        # Get all tikets and reviews (mines and those of my followed users)
+        # Then all reviews (+ reviews from tickets even if they aren't been written by us)
+        # Then exclude tickets with review (to prevent doubles)
+        tickets = Ticket.objects.filter(Q(user=request.user) | Q(user__in=followed_users))
+        reviews = Review.objects.filter(Q(user=request.user) | Q(user__in=followed_users) | Q(ticket__in=tickets))
+        tickets = tickets.exclude(review__in=reviews)
 
-        # Get all tikets with these users
-        tickets = set()
-        for user in followed_users:
-            tickets_before_filter = Ticket.objects.filter(user=user)
-
-            # Check if this ticket has a review or not
-            for ticket in tickets_before_filter:
-
-                # If not, add as a ticket
-                if not Review.objects.filter(ticket=ticket).exists():
-                    tickets.add(ticket)
-
-                # Otherwise, add as a review (doubles are ignore by the set)
-                else:
-                    review = Review.objects.get(ticket=ticket)
-                    reviews.add(review)
-
-        # Combine and sort the two types of posts
-        posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
-
-        return render(request, self.template_name, context={'posts': posts})
-
-
-class FluxView_Test(LoginRequiredMixin, View):
-    template_name = 'ticketing/post.html'
-
-    def get(self, request):
-
-        # For the post, tickets have to be display even if a review has been created (asked by specifications)
-        # They will be display twice
-        tickets = Ticket.objects.filter(user=request.user)
-        reviews = Review.objects.filter(Q(user=request.user) | Q(ticket__in=tickets))
-
+        # Add annotations to recognise them in templates
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
@@ -102,25 +79,14 @@ class PostView(LoginRequiredMixin, View):
 
     def get(self, request):
 
-        # Get all my reviews
-        reviews = set()
-        for review in Review.objects.filter(user=request.user):
-            reviews.add(review)
-
-        # Get all my tickets
         # For the post, tickets have to be display even if a review has been created (asked by specifications)
         # They will be display twice
         tickets = Ticket.objects.filter(user=request.user)
+        reviews = Review.objects.filter(Q(user=request.user) | Q(ticket__in=tickets))
 
-        # Check if someone has reviewed a ticket to save it in 'reviews'
-        for ticket in tickets:
-
-            if Review.objects.filter(ticket=ticket).exists():
-                review = Review.objects.get(ticket=ticket)
-                reviews.add(review)
-
-                # Disable the button to create a review
-                ticket.already_reviewed = True
+        # Add annotations to recognise them in templates
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
         # Combine and sort the two types of posts
         posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
@@ -191,12 +157,14 @@ class CreateTicketView(LoginRequiredMixin, View):
                                                                 'text_button': 'Créer'})
 
 
-class UpdateTicketView(LoginRequiredMixin, View):
+class UpdateTicketView(LoginRequiredMixin, View, CheckUserMixin):
     template_name = 'ticketing/create_ticket.html'
     title = 'Modification du ticket'
 
-    @check_user(Model=Ticket)
+    # @check_user(Model=Ticket)
     def get(self, request, id):
+        super().check(request=request, id=id, Model=Ticket)
+
         ticket = Ticket.objects.get(id=id)
         form = forms.TicketForm(instance=ticket)
         return render(request, self.template_name, context={'form_ticket': form,

@@ -3,7 +3,6 @@ from . import views
 
 urlpatterns = [
     path('flux/', views.FluxView.as_view(), name='home'),
-    path('flux_test/', views.FluxView_Test.as_view(), name='home_test'),
     path('posts/', views.PostView.as_view(), name='posts'),
     path('ticket/add', views.CreateTicketView.as_view(), name='create_ticket'),
     path('review/add', views.CreateCompleteReviewView.as_view(), name='create_complete_review'),

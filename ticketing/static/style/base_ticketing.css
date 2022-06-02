@@ -1,7 +1,15 @@
+/* https://htmlcolors.com/palette/2267/spring-pastel */
+
+.ticket-header {
+    background-color : #E0F1BB;
+}
 .ticket {
-    background-color : #E3E3E3;
+    background-color : #FAFAFA;
 }
 
+.review-header {
+    background-color : #FDE4DE;
+}
 .review {
-    background-color : #bff199;
+    background-color : #FBFBFC;
 }

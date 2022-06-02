@@ -26,10 +26,6 @@ class Ticket(models.Model):
     def __str__(self):
         return f'{self.title} - {self.user}'
 
-    def get_type(self):
-        """ Used in template to recognise post's type between reviews and tickets """
-        return "TICKET"
-
 
 class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
@@ -43,13 +39,9 @@ class Review(models.Model):
     def __str__(self):
         return f'{self.headline} - À propos de : {self.ticket}'
 
-    def get_type(self):
-        """ Used in template to recognise post's type between reviews and tickets """
-        return "REVIEW"
-
     @property
     def rating_stars(self):
-        """ Used in review's template to diplay stars, it converts rating int in a string list like : 'YYYNN' """
-        rating = ['Y' for _ in range(self.rating)]
-        rating += ['N' for _ in range(self.rating, 5)]
-        return rating
+        """ Used in review's template to diplay stars, it converts rating int in a string like : '★★★☆☆' """
+        rating = ['★' for _ in range(self.rating)]
+        rating += ['☆' for _ in range(self.rating, 5)]
+        return ''.join(rating)

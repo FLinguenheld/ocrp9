@@ -1,51 +1,54 @@
-<section class='container border my-2 ticket'>
-
-    <header class='row mt-1'>
-        <div class='col'>
-            <p class='text-left'>
-                {% if ticket.user == user %}
-                    Vous avez publié un ticket
-                {% else %}
-                    {{ ticket.user }} a demandé une critique
-                {% endif %}
-            </p>
-        </div>
-        <div class='col'>
-            <p class='text-right'>
-                {{ ticket.time_created }}
-            {% if ticket.time_edited %}
-                <span class='font-italic'><br> *Édité le {{ ticket.time_edited }}</span>
-            {% endif %}
-            </p>
-        </div>
-    </header>
-
-    <div class='row'>
-        <h3 class='col text-center'>{{ ticket.title }}</h3>
-    </div>
-
-    <div class='row mt-3 px-3'>
-    {% if ticket.image %}
-        <img class='col-3 img-thumbnail' src='{{ ticket.image.url }}' alt='ImageTicket'>
-        <span class='col-9 text-justify'>{{ ticket.description|escape|linebreaks }}</span>
-    {% else %}
-        <p class='col text-justify'>{{ ticket.description|escape|linebreaks }}</p>
-    {% endif %}
-    </div>
-
-    <div class='row justify-content-end m-1'>
-        {% if review_opened %}
-            {% if not ticket.already_reviewed %}
-                <a href="{% url 'create_review' ticket.id %}" class='col-3 mx-auto btn btn-outline-dark mx-2'>Écrire une critique</a>
+<div class="card mb-3 mx-auto">
+    <div class="card-header ticket-header">
+        {% if nested %}
+            Ticket - {{ ticket.user }}
+        {% else %}
+            {% if ticket.user == user %}
+                Vous avez demandé une critique
             {% else %}
-                <a  class='col-3 mx-auto btn btn-outline-dark mx-2 disabled'>Ticket déjà critiqué</a>
+                {{ticket.user}} a demandé une critique
             {% endif %}
         {% endif %}
 
-        {% if buttons and ticket.user == user %}
-            <a href="{% url 'update_ticket' ticket.id %}" class='btn btn-outline-dark mr-2'><i class="bi bi-pencil-fill"></i></a>
-            <a href="{% url 'delete_ticket' ticket.id %}" class='btn btn-outline-dark ml-2'><i class="bi bi-trash3-fill"></i></a>
+        - <small class="text-muted">{{ ticket.time_created }}</small>
+
+        {% if ticket.time_edited %}
+            <small class="text-muted"> (Édité le {{ ticket.time_edited|date:'d/m/y' }})</small>
         {% endif %}
     </div>
 
-</section>
+    <div class="card-body ticket">
+        <div class="card mb-3">
+            <div class="row g-0">
+            {% if ticket.image %}
+                <div class="col-md-4">
+                    <img src="{{ ticket.image.url }}" alt="Image" class="img-thumbnail card-img-top border-0">
+                </div>
+            {% endif %}
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ticket.title }}</h5>
+                        <p class="card-text">{{ ticket.description|escape|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% if not nested %}
+            {% if review_opened %}
+                <div class="text-center mb-1">
+                    <a href="{% url 'create_review' ticket.id %}" class='col-3 mx-auto btn btn-outline-secondary mx-2'>Écrire une critique</a>
+                </div>
+            {% endif %}
+
+            {% if buttons and ticket.user == user %}
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'update_ticket' ticket.id %}" class='btn btn-outline-secondary mr-2'><i class="bi bi-pencil-fill"></i></a>
+                    <a href="{% url 'delete_ticket' ticket.id %}" class='btn btn-outline-secondary ml-2'><i class="bi bi-trash3-fill"></i></a>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
