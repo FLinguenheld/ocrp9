@@ -15,7 +15,8 @@ from subscription.models import UserFollows
 
 
 def check_user(Model):
-    """ Decorator used to check whether the user in request is the same that the user in the Model.get(id).user """
+    """ Decorator used to check whether the user in request is the same that the user in the Model.get(id).user
+        Print an alert in the terminal on each attempts """
 
     def decorator_check_user(func):
         @functools.wraps(func)
@@ -25,6 +26,8 @@ def check_user(Model):
                 if 'id' in kwargs and Model.objects.get(id=kwargs['id']).user == args[1].user:
                     return func(*args, **kwargs)
                 else:
+                    print(f"!!! WARNING : {args[1].user} tried to modify the "
+                          f"{Model.__name__} of {Model.objects.get(id=kwargs['id'])} !!!")
                     return redirect('home')
 
             except Model.DoesNotExist:
@@ -35,19 +38,21 @@ def check_user(Model):
 
 
 class CheckUserMixin():
+    """ Mixin (same as the "chek_user" decorator) used to check whether the user in request is the same that
+        the user in the Model.get(id).user.
+        Print an alert in the terminal on each attempts """
 
     def check(self, request, id, Model):
         try:
-            print('c est bon ?')
-            if Model.objects.get(id=id).user == request.user:
-                print('c est bon')
-                return True
+            if Model.objects.get(id=id).user != request.user:
+                print(f"!!! WARNING : {request.user} tried to modify the "
+                          f"{Model.__name__} : {Model.objects.get(id=id)} !!!")
+                return False
             else:
-                print('baaaaaahhhhhhhhh ?')
-                return redirect('home')
+                return True
 
         except Model.DoesNotExist:
-            return redirect('home')
+            return False
 
 
 class FluxView(LoginRequiredMixin, View):
@@ -163,7 +168,8 @@ class UpdateTicketView(LoginRequiredMixin, View, CheckUserMixin):
 
     # @check_user(Model=Ticket)
     def get(self, request, id):
-        super().check(request=request, id=id, Model=Ticket)
+        if not super().check(request, id, Model=Ticket):
+            return redirect('home')
 
         ticket = Ticket.objects.get(id=id)
         form = forms.TicketForm(instance=ticket)
@@ -171,8 +177,11 @@ class UpdateTicketView(LoginRequiredMixin, View, CheckUserMixin):
                                                             'title': self.title,
                                                             'text_button': 'Modifier'})
 
-    @check_user(Model=Ticket)
+    # @check_user(Model=Ticket)
     def post(self, request, id):
+        if not super().check(request, id, Model=Ticket):
+            return redirect('home')
+
         ticket = Ticket.objects.get(id=id)
         form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
 

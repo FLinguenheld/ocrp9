@@ -3,13 +3,13 @@
 
     {% include 'ticketing/builtin/title.html' with text=title %}
 
-    <div class='border my-2 p-2 review'>
-        <form method='POST'>
+    <div class='border my-2 p-3 review-header'>
+        <form method='POST' class='mb-4'>
             {% csrf_token %}
             {% include 'ticketing/builtin/form_review.html' with add_buttons=True %}
         </form>
 
-        {% include 'ticketing/builtin/ticket.html' with ticket=t buttons=False %}
+        {% include 'ticketing/builtin/ticket.html' with ticket=t buttons=False nested=True %}
     </div>
 
 {% endblock %}

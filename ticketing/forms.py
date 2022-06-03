@@ -11,7 +11,7 @@ class TicketForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['title'].widget.attrs.update({'class': 'w-100 h3 text-center',
-                                                  'placeholder': 'Titre'})
+                                                  'placeholder': 'Titre ticket'})
 
         self.fields['description'].widget.attrs.update({'class': 'w-100 text-justify',
                                                         'placeholder': 'Description'})
@@ -31,7 +31,7 @@ class ReviewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['headline'].widget.attrs.update({'class': 'w-100 h3 text-center',
-                                                        'placeholder': 'Titre'})
+                                                        'placeholder': 'Titre critique'})
 
         self.fields['body'].widget.attrs.update({'class': 'w-100 text-justify',
                                                   'placeholder': 'Critique'})

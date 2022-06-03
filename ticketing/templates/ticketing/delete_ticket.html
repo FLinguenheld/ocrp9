@@ -3,7 +3,7 @@
 
     {% include 'ticketing/builtin/title.html' with text='Confirmation' %}
 
-    <div class='border m-2 p-2 ticket'>
+    <div class='border m-2 p-2 ticket-header'>
         <p class='text-center m-3'>Suppression du ticket "{{ ticket.title }}" créé le {{ ticket.time_created }} ?<br>
         Attention, la suppression d'un ticket supprime également la critique associée.</p>
         <form method='POST'>

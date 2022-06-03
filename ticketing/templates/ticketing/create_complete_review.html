@@ -3,14 +3,14 @@
 
     {% include 'ticketing/builtin/title.html' with text=title %}
 
-    <div class='border m-2'>
+    <div class='border m-2 p-2'>
         <form method='POST' enctype='multipart/form-data' >
             {% csrf_token %}
-                <div class='border m-2 p-2 ticket'>
+                <div class='border m-3 mb-5 p-2 ticket-header'>
                     {% include 'ticketing/builtin/form_ticket.html' with add_buttons=False %}
                 </div>
 
-                <div class='border m-2 p-2 review'>
+                <div class='border m-3 mb-5 p-2 review-header'>
                     {% include 'ticketing/builtin/form_review.html' with add_buttons=False %}
                 </div>
 

@@ -16,25 +16,27 @@
 
     <body>
 
-        <div class='container-fluid mb-5 banner'>
+        <div class='container-fluid mb-5'>
 
             <div class='row'>
-                <a class='col my-auto' href="{% url 'home' %}">
-                    <img class='img-fluid' src="{% static 'LITReview.png' %}" alt='Logo'>
-                </a>
 
-                <nav class='col'>
+                <nav class='col navbar navbar-dark banner'>
+
+                    <a class='col my-auto' href="{% url 'home' %}">
+                        <img class='img-fluid' src="{% static 'LITReview.png' %}" alt='Logo'>
+                    </a>
+
                     {% if user.is_authenticated %}
                         <ul class='nav justify-content-end'>
 
                             <li class='nav-item my-auto'>
-                                <a class='nav-link text-body' href="{% url 'home' %}">FLUX</a>
+                                <a class='nav-link text-light font-weight-bold' href="{% url 'home' %}">FLUX</a>
                             </li>
                             <li class='nav-item my-auto'>
-                                <a class='nav-link text-body' href="{% url 'posts' %}">POSTS</a>
+                                <a class='nav-link text-light font-weight-bold' href="{% url 'posts' %}">POSTS</a>
                             </li>
                             <li class='nav-item my-auto'>
-                                <a class='nav-link text-body' href="{% url 'subscription_management' %}">ABONNEMENTS</a>
+                                <a class='nav-link text-light font-weight-bold' href="{% url 'subscription_management' %}">ABONNEMENTS</a>
                             </li>
 
                             <li class='nav-item my-auto dropleft dropdown'>
@@ -60,12 +62,9 @@
 
         </div>
 
-        <!-- <div class='container bg-warning'> -->
         <div class='container'>
             {% block content %}{% endblock %}
         </div>
-
-
 
 <!-- Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
