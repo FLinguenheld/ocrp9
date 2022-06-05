@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 
 
-admin       - PassAdmin10
-Flo37       - PassDeTest37
-Henri62     - PassDeTest62
-Sophie14    - PassDeTest14
+Sophie14       PassDeTest14
+Flo37          PassDeTest37
+Henry62        PassDeTest62
+admin          PassAdmin10
 
 """
 

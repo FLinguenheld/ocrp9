@@ -1,22 +1,22 @@
 {% extends 'ticketing/base.html' %}
 {% block content_ticketing %}
 
-<div class='container mx-auto'>
+    <div class='container mx-auto'>
 
-    {% for post in posts %}
+        {% for post in posts %}
 
-        {% if post.content_type == 'REVIEW' %}
-            {% include 'ticketing/builtin/review.html' with review=post buttons=True %}
+            {% if post.content_type == 'REVIEW' %}
+                {% include 'ticketing/builtin/review.html' with review=post buttons=True %}
 
-        {% elif post.content_type == 'TICKET' %}
-            {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=False buttons=True %}
+            {% elif post.content_type == 'TICKET' %}
+                {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=False buttons=True %}
 
-        {% endif %}
+            {% endif %}
 
-    {% empty %}
-        <h4 class='text-center'>Vous n'avez rien publié</h4>
-    {% endfor %}
+        {% empty %}
+            <h4 class='text-center'>Vous n'avez rien publié</h4>
+        {% endfor %}
 
-</div>
+    </div>
 
 {% endblock %}

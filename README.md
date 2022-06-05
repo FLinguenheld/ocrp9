@@ -13,8 +13,9 @@ L'objectif de ce projet est de découvrir le framework Django en réalisant le M
 Cette application doit permettre à une communauté d'utilisateurs de consulter et de demander des critiques d'œuvres (livres, articles…).   
 Les utilisateurs peuvent :  
 - Créer un compte et s'y connecter
-- Créer des demandes de critique
+- Créer des tickets (demandes de critique)
 - Répondre à une demande avec une critique
+- Afficher le flux avec les derniers tickets/critiques
 - Suivre d'autres utilisateurs
 
 
@@ -70,3 +71,11 @@ admin          PassAdmin10
 Pour accèder à la page d'administration, entrez l'adresse suivante puis connectez vous avec le compte *admin* :
 
     http://localhost:8000/admin/
+
+****
+### Pep8
+
+Le paquet flake8-html est présent dans l'environnemnt virtuel, vous pouvez générer un nouveau rapport avec la commande 
+suivante :
+
+    flake8 --format=html --htmldir=flake-report

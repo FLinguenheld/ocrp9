@@ -20,7 +20,7 @@ class SubscriptionManagementView(LoginRequiredMixin, View):
             active_subscriptions[sub.followed_user] = forms.RemoveSubscriptionForm(initial={'delete_sub': sub.id})
             already_followed.append(sub.followed_user)
 
-        # Choice list -> Form creates in the template
+        # Choice list -> Form created directly in the template
         choices = {}
         for user in User.objects.all():
             if user not in already_followed and user.username != 'admin' and user.username != request.user.username:

@@ -1,69 +1,74 @@
-{% extends 'subscription/base.html' %}
-{% block content_subscription %}
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
 
-    <div class='mt-5'>
-        <h4 class='text-center'>Suivre d'autres utilisateurs</h4>
-        <div class='container'>
-            {% if choices %}
-                <form method='POST' class='row'>
-                    {% csrf_token %}
+    <div class='container'>
 
-                        <select name='new_subscription' class='col text-center'>
-                            {% for username, id in choices.items %}
-                                <option value={{ id }}>{{ username }}</option>
-                            {% endfor %}
-                        </select>
+        <div class='mt-5'>
+            <h4 class='text-center'>Suivre d'autres utilisateurs</h4>
+            <div class='container'>
+                {% if choices %}
+                    <form method='POST' class='row'>
+                        {% csrf_token %}
 
-                    <button type='submit' class='ml-5 btn btn-primary'>S'abonner</button>
-                </form>
+                            <select name='new_subscription' class='col text-center'>
+                                {% for username, id in choices.items %}
+                                    <option value={{ id }}>{{ username }}</option>
+                                {% endfor %}
+                            </select>
 
-            {% else %}
-                <div class='row border'>
-                    <label class='mx-2 my-auto p-1'>Aucun utilisateur disponible</label>
-                </div>
+                        <button type='submit' class='ml-5 btn btn-primary'>S'abonner</button>
+                    </form>
 
-            {% endif %}
+                {% else %}
+                    <div class='row border'>
+                        <label class='mx-2 my-auto p-1'>Aucun utilisateur disponible</label>
+                    </div>
+
+                {% endif %}
+            </div>
         </div>
+
+        <div class='mt-5'>
+            <h4 class='text-center'>Abonnements</h4>
+            <div class='container'>
+                {% for name, field in subscriptions.items %}
+
+                    <form method='POST' class='row border'>
+                        {% csrf_token %}
+
+                        <label class='col mx-2 my-auto p-1'>{{ name }}</label>
+                        {{ field }}
+                        <button type='submit' class='btn btn-primary'>Désabonner</button>
+                    </form>
+
+                {% empty %}
+                    <div class='row border'>
+                        <label class='mx-2 my-auto p-1'>Aucun abonnement</label>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class='mt-5'>
+            <h4 class='text-center'>Abonnés</h4>
+
+            <div class='container'>
+                {% for follower in followers %}
+
+                    <div class='row border p-0'>
+                        <label class='mx-2 my-auto p-1'>{{ follower }}</label>
+                    </div>
+                {% empty %}
+                    <div class='row border'>
+                        <label class='mx-2 my-auto p-1'>Aucun abonné</label>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 
-    <div class='mt-5'>
-        <h4 class='text-center'>Abonnements</h4>
-        <div class='container'>
-            {% for name, field in subscriptions.items %}
-
-                <form method='POST' class='row border'>
-                    {% csrf_token %}
-
-                    <label class='col mx-2 my-auto p-1'>{{ name }}</label>
-                    {{ field }}
-                    <button type='submit' class='btn btn-primary'>Désabonner</button>
-                </form>
-
-            {% empty %}
-                <div class='row border'>
-                    <label class='mx-2 my-auto p-1'>Aucun abonnement</label>
-                </div>
-
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class='mt-5'>
-        <h4 class='text-center'>Abonnés</h4>
-
-        <div class='container'>
-            {% for follower in followers %}
-
-                <div class='row border p-0'>
-                    <label class='mx-2 my-auto p-1'>{{ follower }}</label>
-                </div>
-            {% empty %}
-                <div class='row border'>
-                    <label class='mx-2 my-auto p-1'>Aucun abonné</label>
-                </div>
-
-            {% endfor %}
-        </div>
-    </div>
-
-{% endblock %}
+{% endblock content %}

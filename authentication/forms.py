@@ -24,4 +24,4 @@ class UpdatePhotoForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['photo'].widget.attrs.update({'class': 'p-1 m-2 border bg-light'})
+        self.fields['photo'].widget.attrs.update({'class': 'p-1 m-2 border mx-auto'})

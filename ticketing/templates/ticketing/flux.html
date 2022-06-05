@@ -1,28 +1,28 @@
 {% extends 'ticketing/base.html' %}
 {% block content_ticketing %}
 
-<div class='container mx-auto'>
-    <div class='row mb-4'>
-        <a href="{% url 'create_ticket' %}" class='col mx-5 btn btn-primary btn-lg '>Nouveau ticket</a>
-        <a href="{% url 'create_complete_review' %}" class='col mx-5 btn btn-primary btn-lg '>Nouvelle critique</a>
+    <div class='container mx-auto'>
+        <div class='row mb-4'>
+            <a href="{% url 'create_ticket' %}" class='col mx-5 btn btn-primary btn-lg '>Nouveau ticket</a>
+            <a href="{% url 'create_complete_review' %}" class='col mx-5 btn btn-primary btn-lg '>Nouvelle critique</a>
+        </div>
+
+        <div class'row'>
+            {% for post in posts %}
+
+                {% if post.content_type == 'REVIEW' %}
+                    {% include 'ticketing/builtin/review.html' with review=post buttons=False %}
+
+                {% elif post.content_type == 'TICKET' %}
+                    {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=True buttons=False %}
+
+                {% endif %}
+
+            {% empty %}
+                <h4 class='text-center'>Aucune entrée à afficher</h4>
+            {% endfor %}
+        </div>
+
     </div>
-
-    <div class'row'>
-        {% for post in posts %}
-
-            {% if post.content_type == 'REVIEW' %}
-                {% include 'ticketing/builtin/review.html' with review=post buttons=False %}
-
-            {% elif post.content_type == 'TICKET' %}
-                {% include 'ticketing/builtin/ticket.html' with ticket=post review_opened=True buttons=False %}
-
-        {% endif %}
-
-        {% empty %}
-            <h4 class='text-center'>Aucune entrée à afficher</h4>
-        {% endfor %}
-    </div>
-
-</div>
 
 {% endblock %}

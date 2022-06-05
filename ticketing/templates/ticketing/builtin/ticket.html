@@ -1,5 +1,6 @@
 <div class="card mb-3 mx-auto">
     <div class="card-header ticket-header">
+
         {% if nested %}
             Ticket - {{ ticket.user }}
         {% else %}
@@ -34,7 +35,6 @@
             </div>
         </div>
 
-
         {% if not nested %}
             {% if review_opened %}
                 <div class="text-center mb-1">
@@ -49,6 +49,7 @@
                 </div>
             {% endif %}
         {% endif %}
+
     </div>
 </div>
 

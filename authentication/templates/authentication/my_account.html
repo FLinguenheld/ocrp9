@@ -1,32 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<table class='mx-auto'>
-    <thead class='text-center'> 
-        <tr>
-            <th class='lead font-weight-bold'>
-                Mon compte
-            </th>
-        </tr>
-    </thead>
+    <table class='mx-auto'>
+        <thead class='text-center'> 
+            <tr>
+                <th class='lead font-weight-bold'>
+                    Mon compte
+                </th>
+            </tr>
+        </thead>
 
-    <tbody class='text-center'>
-        <tr><td><hr></td></tr>
-        <tr><th>{{ user }}</th></tr>
-        <tr><th>{{ user.first_name }}</th></tr>
-        <tr><th>{{ user.last_name }}</th></tr>
-        <tr><th>{{ user.email }}</th></tr>
-        <tr><th>Membre depuis : {{ user.date_joined }}</th></tr>
-        <tr><td><hr></td></tr>
+        <tbody class='text-center'>
+            <tr><td><hr></td></tr>
+            <tr><th>{{ user }}</th></tr>
+            <tr><th>{{ user.first_name }}</th></tr>
+            <tr><th>{{ user.last_name }}</th></tr>
+            <tr><th>{{ user.email }}</th></tr>
+            <tr><th>Membre depuis : {{ user.date_joined }}</th></tr>
+            <tr><td><hr></td></tr>
 
-        <tr><td>
-            <div class='mt-3'>
-                <a class='btn btn-primary' href="{% url 'password_change' %}">Modifier mot de passe</a>
-                <a class='btn btn-primary' href="{% url 'update_account' %}">Modifier informations</a>
-                <a class='btn btn-primary' href="{% url 'update_photo' %}">Modifier avatar</a>
-            </div>
-        </td></tr>
-    </tbody>
-</table>
+            <tr><td>
+                <div class='mt-3'>
+                    <a class='btn btn-primary' href="{% url 'password_change' %}">Modifier mot de passe</a>
+                    <a class='btn btn-primary' href="{% url 'update_account' %}">Modifier informations</a>
+                    <a class='btn btn-primary' href="{% url 'update_photo' %}">Modifier avatar</a>
+                </div>
+            </td></tr>
+        </tbody>
+    </table>
 
 {% endblock content %}
